@@ -99,8 +99,8 @@ class ToTensor(BaseTransform):
 
     def __call__(self, image: Image.Image) -> torch.Tensor:
         image_np = np.array(image).astype(np.float32) / 255.0
-        image_tensor = torch.from_numpy(image_np).permute(2, 0, 1)
-        return image_tensor
+        #image_tensor = torch.from_numpy(image_np).permute(2, 0, 1)
+        return image_np
 
 
 class Compose:
@@ -113,8 +113,10 @@ class Compose:
         self.transforms = transforms
 
     def __call__(self, image: Image.Image) -> Image.Image:
+        print(image.size)
         for transform in self.transforms:
             image = transform(image)
+            print(image.size)
         return image
 
 
@@ -130,5 +132,4 @@ transform_pipeline = Compose([
 
 transformed_image = transform_pipeline(image)
 
-# Печатаем результат
 print(transformed_image)
